@@ -44,9 +44,7 @@ func TestLdapServer1(t *testing.T) {
 				},
 			})
 		}
-
 		return ret
-
 	}})
 
 	s := &LDAPServer{

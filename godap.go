@@ -5,11 +5,11 @@ package godap
 
 import (
 	"fmt"
-	"github.com/go-asn1-ber/asn1-ber"
-	// "io/ioutil"
 	"log"
 	"net"
 	"time"
+
+	"github.com/go-asn1-ber/asn1-ber"
 )
 
 // lame, but simple - set to true when you want log output
@@ -81,32 +81,25 @@ func (s *LDAPServer) Serve() error {
 				for _, h := range s.Handlers {
 					retplist := h.ServeLDAP(ssn, p)
 					if len(retplist) > 0 {
-
 						ldapdebug("Got LDAP response(s) from handler, writing it/them back to client")
-
 						for _, retp := range retplist {
-
 							b := retp.Bytes()
-
 							_, err = conn.Write(b)
 							if err != nil {
 								ldapdebug("Error while writing response packet: %v", err)
 								return
 							}
 						}
-
 						handled = true
 						break
 					}
 				}
 
 				if !handled {
-
 					if IsUnbindRequest(p) {
 						ldapdebug("Got unbind request, closing connection")
 						return
 					}
-
 					ldapdebug("Unhandled packet, closing connection: %v", p)
 					if LDAPDebug {
 						ber.PrintPacket(p)
@@ -116,11 +109,8 @@ func (s *LDAPServer) Serve() error {
 					// here, in practice I don't know that it matters
 					return
 				}
-
 				// loop back around and wait for another
-
 			}
-
 		}(conn)
 	}
 	return nil
